@@ -1,15 +1,19 @@
 const express=require("express");
 const app=express();
 
-app.use("/komal",(req,res)=>{
-    res.send("hello from komal")
+app.use("/user",(req,res)=>{
+    res.send("hello from server")
+})
+app.get("/user",(req,res)=>{
+    res.send("enter the details")
+
+})
+
+app.post("/user",(req,res)=>{
+    res.send("data saved successfully")
 })
 app.use((req,res)=>{
     res.send("hello from server")
-})
-app.use("/list",(req,res)=>{
-    res.send("hello from list")
-
 })
 
 
