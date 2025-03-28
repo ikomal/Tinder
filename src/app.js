@@ -1,22 +1,19 @@
-const express=require("express");
-const app=express();
+const express = require("express");
+const app = express();
 
-app.use("/user",(req,res)=>{
-    res.send("hello from server")
-})
-app.get("/user",(req,res)=>{
-    res.send("enter the details")
+const {authorize}=require("./middlewares/auth")
+app.use("/admin",authorize);
 
-})
 
-app.post("/user",(req,res)=>{
-    res.send("data saved successfully")
-})
-app.use((req,res)=>{
-    res.send("hello from server")
+app.get("/admin/getdata",(req,res)=>{
+  res.send("data collected successfully");
+});
+
+app.get("/admin/deleteuser",(req,res)=>{
+  res.send("deleted user successfully");
 })
 
 
-app.listen(7000,()=>{
-    console.log("server started");
-})
+app.listen(7000, () => {
+  console.log("server started");
+});
