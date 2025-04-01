@@ -1,25 +1,38 @@
 const express = require("express");
 const app = express();
+const User=require("./models/user")
 
-const {authorize}=require("./middlewares/auth")
-app.use("/admin",authorize);
+const database=require("./config/database")
+
+app.post("/signup",async(req,res)=>{
+  //creating instance of model user
+  const user=new User({
+  firstName:"komal",
+  lastName:"sharma",
+  age:"22",
+  emailId:"komal@gmail.com",
+  password:"komal@123"
+
+  })
+  try
+  {await user.save();
+  res.send("user added successfully");}
+  catch(err)
+  {
+    res.status(400).send("error saving the user"+err.message)
+  }
 
 
-app.get("/admin/getdata",(req,res)=>{
 
-  res.send("data collected successfully");
 });
 
-app.get("/admin/deleteuser",(req,res)=>{
-  res.send("deleted user successfully");
+database()
+.then(()=>{
+    console.log("databse connceted");
 })
-
-//error handling
-app.use("/",(err,req,res,next)=>{
-  if (err)
-  {res.status(500).send("something went wrong ji!!!!")}
+.catch((err)=>{
+    console.log("cannot connect to database");
 });
-
 
 app.listen(7000, () => {
   console.log("server started");
