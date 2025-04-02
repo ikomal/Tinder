@@ -64,6 +64,37 @@ app.get("/usersdata", async (req, res) => {
   }
 });
 
+//delete admin data using
+app.delete("/admindata",async(req,res)=>{
+  const adminid=req.body.userid;
+  try{
+    await Admin.findByIdAndDelete(adminid);
+    res.send("user deleted successfully");
+    
+  }catch (err) {
+    res.status(404).send("something went wrong");
+  }
+})
+
+//updata data of admin
+app.patch("/adminupdate",async(req,res)=>{
+   const data=req.body;
+   const userid=req.body.userid;
+   try{
+    const admin=await Admin.findByIdAndUpdate(userid,data);
+    console.log(admin);
+    res.send("user updated successfully");
+
+   }catch (err) {
+    res.status(404).send("something went wrong");
+  }
+})
+
+
+
+
+
+
 database()
   .then(() => {
     console.log("databse connceted");
