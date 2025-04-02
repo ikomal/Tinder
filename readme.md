@@ -15,3 +15,8 @@ Epiosde 6-
 -create a POST /signup api to push data to DB
 -push documents using api on postman
 -always wrap databse realted in a try catch block
+
+Episode 7-
+-diff btw json obj and javascript obj
+-add express.json middleware to app (req.body)
+-maky dynamic api to change data from end user
