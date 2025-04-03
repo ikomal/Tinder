@@ -20,3 +20,8 @@ Episode 7-
 -diff btw json obj and javascript obj
 -add express.json middleware to app (req.body)
 -maky dynamic api to change data from end user
+-create a DELETE user api
+-update admin data using PATCH api using userid
+-diff btw put and delete
+-update user with emailid
+-explore mongoose documentation
