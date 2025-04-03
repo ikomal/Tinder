@@ -25,3 +25,10 @@ Episode 7-
 -diff btw put and delete
 -update user with emailid
 -explore mongoose documentation
+
+Epiose 8-
+-explore all schema types
+-add required,minlength,maxlength all the mandatory schema types
+-add default and timestamps to userschema
+-add validate to get a valid dataa
+-checks all the test cases 

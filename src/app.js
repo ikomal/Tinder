@@ -1,20 +1,15 @@
+const database = require("./config/database");
+
 const express = require("express");
 const app = express();
 const User = require("./models/user");
 const Admin = require("./models/admin");
 
-const database = require("./config/database");
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   //creating instance of model user
-  const user = new User({
-    firstName: "komal",
-    lastName: "sharma",
-    age: "22",
-    emailId: "komal@gmail.com",
-    password: "komal@123",
-  });
+  const user = new User(req.body);
   try {
     await user.save();
     res.send("user added successfully");
@@ -76,17 +71,19 @@ app.delete("/admindata",async(req,res)=>{
   }
 })
 
-//updata data of admin
-app.patch("/adminupdate",async(req,res)=>{
+//updata data of user
+app.patch("/signup",async(req,res)=>{
    const data=req.body;
-   const userid=req.body.userid;
+   const emailid=req.body.emailId;
    try{
-    const admin=await Admin.findByIdAndUpdate(userid,data);
-    console.log(admin);
+    const user=await User.findByIdAndUpdate(emailid,data,{
+      runValidators:true,
+    })
+    // console.log(user);
     res.send("user updated successfully");
 
    }catch (err) {
-    res.status(404).send("something went wrong");
+    res.status(404).send("updation failed "+ err.message);
   }
 })
 
