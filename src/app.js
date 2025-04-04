@@ -1,20 +1,36 @@
-const database = require("./config/database");
-
 const express = require("express");
 const app = express();
+const database = require("./config/database");
+const bcrypt = require("bcrypt");
+
 const User = require("./models/user");
 const Admin = require("./models/admin");
+const { validatesignup } = require("./utils/validatesignup");
 
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  //creating instance of model user
-  const user = new User(req.body);
   try {
+    //validation of data
+    validatesignup(req);
+
+    //encryption of data using bcrypt
+    const { firstName, lastName, password, emailId,age} = req.body;
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    //creating instance of model user
+    const user = new User({
+      firstName,
+      lastName,
+      password: passwordHash,
+      emailId,
+      age
+    });
+
     await user.save();
     res.send("user added successfully");
   } catch (err) {
-    res.status(400).send("error saving the user" + err.message);
+    res.status(400).send("ERROR: " + err.message);
   }
 });
 
@@ -50,9 +66,9 @@ app.get("/user", async (req, res) => {
 
 //get password using findone
 app.get("/usersdata", async (req, res) => {
-  const passwordadmin=req.body.password
+  const passwordadmin = req.body.password;
   try {
-    const admins = await Admin.findOne({password:passwordadmin});
+    const admins = await Admin.findOne({ password: passwordadmin });
     res.send(admins);
   } catch (err) {
     res.status(404).send("something went wrong");
@@ -60,46 +76,53 @@ app.get("/usersdata", async (req, res) => {
 });
 
 //delete admin data using
-app.delete("/admindata",async(req,res)=>{
-  const adminid=req.body.userid;
-  try{
+app.delete("/admindata", async (req, res) => {
+  const adminid = req.body.userid;
+  try {
     await Admin.findByIdAndDelete(adminid);
     res.send("user deleted successfully");
-    
-  }catch (err) {
+  } catch (err) {
     res.status(404).send("something went wrong");
   }
-})
+});
 
 //updata data of user
-app.patch("/signup",async(req,res)=>{
-   const data=req.body;
-   const emailid=req.body.emailId;
-   try{
-    const user=await User.findByIdAndUpdate(emailid,data,{
-      runValidators:true,
-    })
+app.patch("/signup/:userId", async (req, res) => {
+  const data = req.body;
+  const emailid = req.body.emailId;
+  const userid = req.params?.userId;
+  try {
+    const allowed_updates = ["gender", "about", "skills", "password", "age"];
+
+    const isallowed = Object.keys(data).every((k) =>
+      allowed_updates.includes(k)
+    );
+
+    if (!isallowed) {
+      throw new Error("updation not allowed");
+    }
+
+    if (data?.skills.length > 5) {
+      throw new Error("more than5 skills not allowed");
+    }
+    const user = await User.findByIdAndUpdate(userid, data, {
+      runValidators: true,
+    });
     // console.log(user);
     res.send("user updated successfully");
-
-   }catch (err) {
-    res.status(404).send("updation failed "+ err.message);
+  } catch (err) {
+    res.status(404).send("updation failed " + err.message);
   }
-})
-
-
-
-
-
+});
 
 database()
   .then(() => {
     console.log("databse connceted");
+    app.listen(7000, () => {
+      console.log("server started");
+    });
   })
+
   .catch((err) => {
     console.log("cannot connect to database");
   });
-
-app.listen(7000, () => {
-  console.log("server started");
-});

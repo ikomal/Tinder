@@ -32,3 +32,8 @@ Epiose 8-
 -add default and timestamps to userschema
 -add validate to get a valid dataa
 -checks all the test cases 
+
+Epiosde 9-
+-validate the req in utils
+-install bcrypt to hash the password
+-create passwordHash using bcrypt.hash and save user hash password
