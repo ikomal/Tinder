@@ -37,3 +37,6 @@ Epiosde 9-
 -validate the req in utils
 -install bcrypt to hash the password
 -create passwordHash using bcrypt.hash and save user hash password
+-create Login API
+-valide the password and email using bcrypt.compare
+-send the resposnse login successful if valid else throw error
