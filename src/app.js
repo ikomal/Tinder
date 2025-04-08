@@ -6,8 +6,12 @@ const bcrypt = require("bcrypt");
 const User = require("./models/user");
 const Admin = require("./models/admin");
 const { validatesignup } = require("./utils/validatesignup");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const {userAuth} = require("./middlewares/auth");
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -15,7 +19,7 @@ app.post("/signup", async (req, res) => {
     validatesignup(req);
 
     //encryption of data using bcrypt
-    const { firstName, lastName, password, emailId,age} = req.body;
+    const { firstName, lastName, password, emailId, age } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
 
     //creating instance of model user
@@ -24,7 +28,7 @@ app.post("/signup", async (req, res) => {
       lastName,
       password: passwordHash,
       emailId,
-      age
+      age,
     });
 
     await user.save();
@@ -34,30 +38,42 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/login",async(req,res)=>{
-  try{
-    const{emailId,password}=req.body;
-    const user=await User.findOne({emailId:emailId});
-    if(!user)
-    {
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
       throw new Error("Invalid Credentials!!");
     }
-    const isvalidpassword=await bcrypt.compare(password,user.password);
-    if(!isvalidpassword)
-    {
+    const isvalidpassword = await user.validatePassword(password);
+    if (!isvalidpassword) {
       throw new Error("Invalid Credentials!!");
-    }
-    else{
+    } else {
+      //create a jwt token
+      const token = user.getJWT();
+
+      //add token to cookie
+      res.cookie( token,{expires: new Date(Date.now()+ 1*3600000),httpOnly:true});
       res.send("Login successfull!!");
     }
-
-  }catch(err)
-  {
-    res.status(400).send("ERROR: "+err.message);
-
+  } catch (err) {
+    res.status(400).send("ERROR: " + err.message);
   }
+});
+
+app.post("/sendconnection",userAuth,async(req,res)=>{
+  const user=req.user;
+  res.send(user.firstName+" has sent connection request");
 })
 
+app.get("/profile", userAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    res.send(user);
+  } catch (err) {
+    res.status(404).send("ERROR: " + err.message);
+  }
+});
 app.post("/admin", async (req, res) => {
   const admin = new Admin(req.body);
   // {

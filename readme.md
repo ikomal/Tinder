@@ -40,3 +40,13 @@ Epiosde 9-
 -create Login API
 -valide the password and email using bcrypt.compare
 -send the resposnse login successful if valid else throw error
+
+Epiosode 10-
+-install cookie-parser
+-create a dummy cookie
+-creat a GET/profile api to check it gives back cookie or not
+-install jsonwebtoken
+-in LOGIN api,after validation of email and password create a jwt token and send it to suer in cookies
+-read cookies inside your PROFILE api and find logged in user
+-create userAuth middleware and add in profile and sendconncetion API
+-add expiry to jwt and cookie of 7 days
