@@ -50,3 +50,12 @@ Epiosode 10-
 -read cookies inside your PROFILE api and find logged in user
 -create userAuth middleware and add in profile and sendconncetion API
 -add expiry to jwt and cookie of 7 days
+
+Epiosde 11-
+-create list of all api and group them in particular router
+-read documentation for express.router
+-create route folder for managing auth,progile,req connection
+-create authRouter,profileRouter,reqRouter
+-import all above router in app.js
+
+
