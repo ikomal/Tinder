@@ -57,5 +57,8 @@ Epiosde 11-
 -create route folder for managing auth,progile,req connection
 -create authRouter,profileRouter,reqRouter
 -import all above router in app.js
+-create POST/logout api
+-create PATCH/proifle/edit api
+-create yourself forgot password api
 
 

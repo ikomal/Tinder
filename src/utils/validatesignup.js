@@ -23,6 +23,15 @@ const validatesignup=((req)=>{
     }
 });
 
+const validateEdit=(req)=>{
+    const allowedEdits=["age","lastName","firstName","about","skills","password"];
+    // const{firstName,lastNametName,age,password,skills,about}=req.body;
+    const isEditallowed=Object.keys(req.body).every((field)=>{
+        return allowedEdits.includes(field);
+    })
+    return isEditallowed;
+}
+
 module.exports={
-    validatesignup
+    validatesignup,validateEdit
 }
