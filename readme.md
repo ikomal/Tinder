@@ -61,4 +61,15 @@ Epiosde 11-
 -create PATCH/proifle/edit api
 -create yourself forgot password api
 
+Epiosde 12-
+-create connReq schema
+-send connreq api
+-validate data for all api
+-think about all corner cases
+-learn about $or and $and logical queries in mongodb
+schema.pre("save",fn())
+-what is index and why do we need it
+-adv and disadv of indexes
+-ALWAYS THINK ABOUT CORNER CASES
+
 

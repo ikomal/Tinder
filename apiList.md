@@ -11,8 +11,8 @@ PATCH/profile/edit
 PATCH/profile/password
 
 ## reqRouter
-POST/req/send/interrested/userid
-POST/req/send/ignored/userid
+POST/req/send/:status/:userid
+POST/req/send/:status/:userid
 
 POST/req/review/accepted/reqid
 POST/req/reviw/rejected/reqid

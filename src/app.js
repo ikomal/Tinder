@@ -1,14 +1,13 @@
 const express = require("express");
 const app = express();
 const database = require("./config/database");
+app.use(express.json());
 
 const User = require("./models/user");
 const Admin = require("./models/admin");
 const cookieParser = require("cookie-parser");
-
-
-app.use(express.json());
 app.use(cookieParser());
+
 const authRouter=require('./routes/auth')
 const profileRouter=require("./routes/profile");
 const reqRouter=require("./routes/req");
