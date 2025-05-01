@@ -5,10 +5,12 @@ const connectionReqSchema = new mongoose.Schema(
     fromSenderid: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref:"User",
     },
     toReceiverid: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref:"User",
     },
     status: {
       type: String,
@@ -24,7 +26,7 @@ const connectionReqSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-connectionReqSchema.pre("save",function(){
+connectionReqSchema.pre("save",function(next){
   const connreq=this;
   if(connreq.fromSenderid.equals(connreq.toReceiverid)){
     throw new Error("cannot send req to self");

@@ -72,4 +72,16 @@ schema.pre("save",fn())
 -adv and disadv of indexes
 -ALWAYS THINK ABOUT CORNER CASES
 
+Epiosde 13-
+-thought process POST/GET
+-read about ref and populate
+-create GET/USER/REQUEST/PENDING
+-create GET/USER/CONNECTIONS
+
+Episode 14-
+-GET user/feed
+-explore all logic to create this
+-explore $nin,$ne,$and all the queries in monogoDB
+
+
 

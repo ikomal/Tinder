@@ -19,7 +19,7 @@ POST/req/reviw/rejected/reqid
 
 ## userRouter
 GET/connections
-GET/req/recieved
+GET/req/recieved/pending
 GET/feed--profile of ither users on feed
 
 

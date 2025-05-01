@@ -57,7 +57,7 @@ reqRouter.post(
 
       await reqData.save();
       res.json({
-        message: `${user.firstName} send the connection request`,
+        message: `${user.firstName} send the connection request to ${toUser.firstName}`,
         reqData,
       });
     } catch (err) {
@@ -65,5 +65,41 @@ reqRouter.post(
     }
   }
 );
+
+reqRouter.post("/request/review/:status/:requestId",userAuth,async(req,res)=>{
+  try{
+    const {status,requestId}=req.params;
+    const loggedinUser=req.user;
+
+
+    //validation of status
+    const allowedStatus=["accepted","rejected"];
+    if(!allowedStatus.includes(status)){
+      return res.status(400).json({
+        message:"status is not valid"
+      })
+    }
+
+    const connReq=await connRequest.findOne({
+      toReceiverid:loggedinUser._id,
+      status:"interested",
+      _id:requestId
+
+    });
+    
+    if(!connReq){
+      return res.status(404).json({
+        message:"Could not find request"
+      })
+    }
+    connReq.status=status;
+    const data= await connReq.save();
+    res.json({message:"connection request "+status,data})
+
+
+  }catch(err){
+    res.status(404).json("ERROR: "+err.message);
+  }
+})
 
 module.exports = reqRouter;
